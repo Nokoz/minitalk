@@ -6,7 +6,7 @@
 /*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 09:56:43 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/09/27 16:34:18 by gvardaki         ###   ########.fr       */
+/*   Updated: 2023/09/27 16:43:16 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,23 @@ void	ft_send_sig(int pid, char c)
 	}
 }
 
+void	ft_send_null(int pid)
+{
+	int		bit;
+	char	null;
+
+	bit = 8;
+	null = '\0';
+	while (--bit >= 0)
+	{
+		if (null >> bit & 1)
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
+		usleep(50);
+	}
+}
+
 int	main(int ac, char **av)
 {
 	int	pid;
@@ -81,6 +98,7 @@ int	main(int ac, char **av)
 		}
 		while (*av[2])
 			ft_send_sig(pid, *av[2]++);
+		ft_send_null(pid);
 	}
 	return (0);
 }
