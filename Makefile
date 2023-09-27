@@ -1,8 +1,8 @@
-NAME = server client
+NAME = minitalk
 
-SRC_DIR = ./src/
+SERVER = server
 
-SRCS = $(SRC_SERV) $(SRC_CLIENT)
+CLIENT = client
 
 SRC_SERV = server.c
 
@@ -12,21 +12,21 @@ CC = gcc
 
 FLAGS = -Wall -Wextra -Werror
 
-OBJS = $(SRCS:.c=.o)
+all: $(SERVER) $(CLIENT)
 
-$(NAME) : $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+$(NAME): $(SERVER) $(CLIENT)
 
-$(OBJS): $(SRC_DIR)%.o : $(SRC_DIR)%.c
-	$(CC) $(FLAGS) -c $< -o $@
+$(SERVER): $(SRC_SERV) minitalk.h
+	$(CC) $(FLAGS) -o $(SERVER) $(SRC_SERV)
 
-all: $(NAME)
+$(CLIENT): $(SRC_CLIENT) minitalk.h
+	$(CC) $(FLAGS) -o $(CLIENT) $(SRC_CLIENT)
+
 
 clean:
-	rm -rf $(OBJS)
+	rm -rf $(CLIENT) $(SERVER)
 
 fclean: clean
-	rm -rf $(NAME)
 
 re: fclean all
 
