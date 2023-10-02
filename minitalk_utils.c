@@ -1,42 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   minitalk_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gvardaki <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/27 09:57:18 by gvardaki          #+#    #+#             */
-/*   Updated: 2023/10/02 09:07:09 by gvardaki         ###   ########.fr       */
+/*   Created: 2023/10/02 08:49:42 by gvardaki          #+#    #+#             */
+/*   Updated: 2023/10/02 08:51:17 by gvardaki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	handler(int num)
+int	ft_atoi(char *str)
 {
-	static int	i;
-	static int	bin = 0;
+	long	nb;
+	int		len;
+	int		i;
 
-	if (num == 30)
-		bin = (bin << 1) + 0;
-	else
-		bin = (bin << 1) + 1;
-	i++;
-	if (i == 8)
-	{
-		write(1, &bin, 1);
-		i = 0;
-		bin = 0;
-	}
+	len = 0;
+	while (str && str[len])
+		len++;
+	i = 0;
+	nb = 0;
+	while (i < len)
+		nb = (nb * 10) + (str[i++] - 48);
+	return (nb);
 }
 
-int	main(void)
+size_t	ft_strlen(const char *s)
 {
-	ft_putnbr(getpid());
-	write(1, "\n", 1);
-	signal(SIGUSR1, handler);
-	signal(SIGUSR2, handler);
-	while (1)
-		pause();
-	return (0);
+	size_t	i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
+void	ft_putnbr(long nbr)
+{
+	char	temp;
+
+	if (nbr / 10 > 0)
+		ft_putnbr(nbr / 10);
+	temp = nbr % 10 + '0';
+	write(1, &temp, 1);
 }
